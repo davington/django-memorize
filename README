@@ -1,4 +1,4 @@
-A django application the theory of [http://en.wikipedia.org/wiki/Spaced_repetition spaced repetition] to help you learn your items. Flashcard web apps have just gotten easier.
+A django application the theory of [http://en.wikipedia.org/wiki/Spaced_repetition spaced repetition] to help you anything you'd like. Flashcard web apps have just gotten easier.
 
 The application groups items by User objects. Every user has their own set of items that they will practice memorizing.
 

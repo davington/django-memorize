@@ -7,7 +7,7 @@ if __name__ == '__main__':
           description="Memorize your Django project's items with spaced repetition theory",
           author='Cristian Esquivias',
           author_email='cristian.esquivias@gmail.com',
-          version='0.1',
+          version='0.5',
           packages=['memorize'],
           url='http://code.google.com/p/django-memorize/',
     )
