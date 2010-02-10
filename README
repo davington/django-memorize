@@ -1,0 +1,57 @@
+A django application the theory of [http://en.wikipedia.org/wiki/Spaced_repetition spaced repetition] to help you learn your items. Flashcard web apps have just gotten easier.
+
+The application groups items by User objects. Every user has their own set of items that they will practice memorizing.
+
+=Installation=
+{{{
+sudo python setup.py install
+}}}
+
+=Usage=
+
+==Add an Item to Practice==
+Let's assume you have a flashcard web app with a card model:
+
+{{{
+from django.db import models
+from django.contrib.auth.models import User
+
+class Card(models.Model):
+    front = models.CharField(maxlength=255)
+    back = models.CharField(maxlength=255)
+    user = models.ForeignKey(User)
+
+}}}
+
+To begin practicing a new card, save a practice object for your flashcard.    
+
+{{{
+from memorize.models import Practice
+
+card = Card(front="When was Sgt. Pepper released?", back="1967", user=request.user)
+practice = Practice(item=card, user=card.user)
+practice.save()
+
+}}}
+
+==Start Practicing==
+The view `memorize.views.next_practice_item` does all the work of determining what the next item a user should practice. You just need to provide a template file. Add an item to your urls.py file:
+
+{{{
+urlpatterns += patterns(
+    'memorize.views',
+    url(r'^item/next/$', 'next_practice_item', {'template': 'memorize/next.html'}, name='next-song'),
+)
+}}}
+
+==Saving Feedback==
+The key to spaced repetition algorithms is using your past performance to determine when is the optimal time to reshow an item. If you used the `next_practice_item` the template will have a `form` object that provides all the relative information.
+
+The view `memorize.views.process_rating` will process the data. Add this view to your urls.py file.
+
+Example:
+{{{
+<form action="{% url memorize.views.process_rating %}" method="post">
+    {{ form }}
+</form>
+}}}
