@@ -1,6 +1,6 @@
-A django application the theory of [http://en.wikipedia.org/wiki/Spaced_repetition spaced repetition] to help you anything you'd like. Flashcard web apps have just gotten easier.
+Writing a flashcard application is almost a rite of passage for django users. You create a simple Card model, you create a quiz view and template and you call it a day. A simple application and not very useful.
 
-The application groups items by User objects. Every user has their own set of items that they will practice memorizing.
+Django-memorize adds a more advanced way of learning your flashcards (or whatever items you'd like) with the theory of [http://en.wikipedia.org/wiki/Spaced_repetition spaced repetition]. Flashcard web apps have just gotten easier.
 
 =Installation=
 {{{
