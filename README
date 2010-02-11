@@ -1,6 +1,6 @@
 Writing a flashcard application is almost a rite of passage for django users. You create a simple Card model, you create a quiz view and template and you call it a day. A simple application and not very useful.
 
-Django-memorize adds a more advanced way of learning your flashcards (or whatever items you'd like) with the theory of [http://en.wikipedia.org/wiki/Spaced_repetition spaced repetition]. Flashcard web apps have just gotten easier.
+Django-memorize adds a more advanced way of learning your flashcards (or whatever items you'd like) with the theory of [http://en.wikipedia.org/wiki/Spaced_repetition spaced repetition]. The [http://www.supermemo.com/english/ol/sm2.htm SuperMemo 2 algorithm] is currently used. Flashcard web apps have just gotten better and easier.
 
 =Installation=
   # Download the [http://code.google.com/p/django-memorize/downloads/list latest version].
@@ -17,8 +17,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Card(models.Model):
-    front = models.CharField(maxlength=255)
-    back = models.CharField(maxlength=255)
+    front = models.CharField(max_length=255)
+    back = models.CharField(max_length=255)
     user = models.ForeignKey(User)
 
 }}}
