@@ -3,9 +3,9 @@ Writing a flashcard application is almost a rite of passage for django users. Yo
 Django-memorize adds a more advanced way of learning your flashcards (or whatever items you'd like) with the theory of [http://en.wikipedia.org/wiki/Spaced_repetition spaced repetition]. Flashcard web apps have just gotten easier.
 
 =Installation=
-{{{
-sudo python setup.py install
-}}}
+  # Download the [http://code.google.com/p/django-memorize/downloads/list latest version].
+  # Extract and run `python setup.py install`.
+  # Add `memorize` to `INSTALLED_APPS` list.
 
 =Usage=
 
@@ -43,6 +43,18 @@ urlpatterns += patterns(
     url(r'^item/next/$', 'next_practice_item', {'template': 'memorize/next.html'}, name='next-song'),
 )
 }}}
+
+===Template Variables Provided===
+<dl>
+    <dt>form</dt>
+    <dd>A `memorize.forms.RatingsForm` instance you use to save the performance on this practice instance.</dd>
+
+    <dt>item</dt>
+    <dd>Your original item. Use this to get your information (e.g., `card.front` information)</dd>
+
+    <dt>practice</dt>
+    <dd>The practice row.</dd>
+</dl>
 
 ==Saving Feedback==
 The key to spaced repetition algorithms is using your past performance to determine when is the optimal time to reshow an item. If you used the `next_practice_item` the template will have a `form` object that provides all the relative information.
