@@ -11,7 +11,7 @@ if __name__ == '__main__':
           long_description=open('README', 'r').read(),
           author='Cristian Esquivias',
           author_email='cristian.esquivias@gmail.com',
-          version='0.5',
+          version='0.5.1',
           packages=['memorize'],
           url='http://code.google.com/p/django-memorize/',
           classifiers=[
