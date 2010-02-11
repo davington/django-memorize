@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+
+"""Requires rst2html from Sphinx"""
+
+from subprocess import Popen, PIPE
+from sys import argv
+
+if __name__ == '__main__':
+    p = Popen(['rst2html', argv[1]], stdout=PIPE)
+    output = p.stdout.read().replace('&lt;', '<').replace('&gt;', '>').replace('&quot', '"').replace('<pre class="literal-block">', '{{{').replace('</pre>', '}}}')
+    print output[output.find('<body>')+6:output.rfind('</body>')]
