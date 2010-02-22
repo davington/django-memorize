@@ -14,6 +14,8 @@ if __name__ == '__main__':
           version='0.5.1',
           packages=['memorize'],
           url='http://code.google.com/p/django-memorize/',
+          license='GPL',
+          keywords='django flashcard learning',
           classifiers=[
             'Development Status :: 4 - Beta',
             'Environment :: Web Environment',
