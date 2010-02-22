@@ -7,6 +7,7 @@ Installation
 #. Download the `latest version <http://code.google.com/p/django-memorize/downloads/list>`_.
 #. Extract and run ``python setup.py install``.
 #. Add ``memorize`` to ``INSTALLED_APPS`` list.
+#. Run ``manage.py syncdb`` command.
 
 Usage
 =====
@@ -58,10 +59,18 @@ Saving Feedback
 ---------------
 The key to spaced repetition algorithms is using your past performance to determine when is the optimal time to reshow an item. If you used the ``next_practice_item`` the template will have a ``form`` object that provides all the relative information.
 
-The view ``memorize.views.process_rating`` will process the data. Add this view to your urls.py file.
+The view ``memorize.views.process_rating`` will process the data. Add this view to your urls.py file. ``process_rating`` takes in a ``post_save_redirect`` argument.
 
-Example::
+Feedback Form::
 
   <form action="{% url memorize.views.process_rating %}" method="post">
       {{ form }}
+      <button>Save Feedback</button>
   </form>
+
+urls.py addition::
+
+  urlpatterns += patterns(
+      'memorize.views',
+      url(r'^feedback/$', 'process_rating', {'post_save_redirect': '/'}),
+  )
