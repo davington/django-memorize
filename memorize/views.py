@@ -19,7 +19,11 @@ def post_required(view):
 
 @login_required
 def next_practice_item(request, template):
-    practice = Practice.objects.filter(user=request.user).order_by('next_practice')[0]
+    practices = Practice.objects.filter(user=request.user).order_by('next_practice')
+    if len(practices) == 0:
+        return direct_to_template(request, template, {
+                'errors': ['No items to practice']})
+    practice = practices[0]
     form = RatingsForm(initial={"id": practice.id})
     item = practice.item
     return direct_to_template(request, template, {
