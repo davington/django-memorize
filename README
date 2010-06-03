@@ -57,9 +57,9 @@ practice
 
 Saving Feedback
 ---------------
-The key to spaced repetition algorithms is using your past performance to determine when is the optimal time to reshow an item. If you used the ``next_practice_item`` the template will have a ``form`` object that provides all the relative information.
+The key to spaced repetition algorithms is using your past performance to determine when is the optimal time to reshow an item. If you used the ``next_practice_item`` the template will have a ``form`` object that provides all the relevant information.
 
-The view ``memorize.views.process_rating`` will process the data. Add this view to your urls.py file. ``process_rating`` takes in a ``post_save_redirect`` argument.
+The view ``memorize.views.process_rating`` will process the data. Add this view to your urls.py file. The view ``process_rating`` requires a ``post_save_redirect`` argument.
 
 Feedback Form::
 
