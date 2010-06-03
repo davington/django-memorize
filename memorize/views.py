@@ -47,3 +47,10 @@ def skip_practice(request, practice_id, redirect):
     practice.delay()
     practice.save()
     return HttpResponseRedirect(reverse(redirect))
+
+@login_required
+def practice_list(request, template='memorize/practice_list.html', limit=20):
+    practice_list = Practice.objects.filter(user=request.user)\
+        .order_by('next_practice')[:limit]
+    return direct_to_template(request, template, {
+            'practice_list': practice_list})
