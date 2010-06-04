@@ -1,8 +1,9 @@
 from functools import wraps
 
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, InvalidPage
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic.simple import direct_to_template
 
@@ -49,8 +50,32 @@ def skip_practice(request, practice_id, redirect):
     return HttpResponseRedirect(reverse(redirect))
 
 @login_required
-def practice_list(request, template='memorize/practice_list.html', limit=20):
+def practice_list(request, template='memorize/practice_list.html',
+                  paginate_by=None, page=None, allow_empty=True):
     practice_list = Practice.objects.filter(user=request.user)\
-        .order_by('next_practice')[:limit]
+        .order_by('next_practice')
+
+    if paginate_by:
+        paginator = Paginator(practice_list, paginate_by,
+                              allow_empty_first_page=allow_empty)
+        if not page:
+            page = request.GET.get('page', 1)
+        try:
+            page_number = int(page)
+        except ValueError:
+            if page == 'last':
+                page_number = paginator.num_pages
+            else:
+                # Page is not 'last', nor can it be converted to an int.
+                raise Http404
+        try:
+            page_obj = paginator.page(page_number)
+        except InvalidPage:
+            raise Http404
+
+        return direct_to_template(request, template, {
+                'paginator': paginator,
+                'page_obj': page_obj,})
+
     return direct_to_template(request, template, {
             'practice_list': practice_list})
