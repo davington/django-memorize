@@ -19,7 +19,7 @@ from functools import wraps
 
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.views.generic.simple import direct_to_template
 
@@ -71,3 +71,19 @@ def practice_list(request, template='memorize/practice_list.html', limit=20):
         .order_by('next_practice')[:limit]
     return direct_to_template(request, template, {
             'practice_list': practice_list})
+
+@login_required
+def add_to_practice(request, object_id=None, slug=None, slug_field=None,
+                    model=None, post_save_redirect=None):
+    if object_id:
+        obj = get_object_or_404(model, pk=int(object_id))
+    elif slug and slug_field:
+        obj = get_object_or_404(model, **{slug_field: slug})
+    else:
+        return HttpResponseBadRequest()
+
+    practice = Practice(item=obj, user=request.user).save()
+    if post_save_redirect:
+        return HttpResponseRedirect(post_save_redirect)
+    else:
+        return HttpResponseRedirect(reverse('memorize.views.practice_list'))
