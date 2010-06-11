@@ -1,9 +1,26 @@
+# Copyright 2010 Cristian Esquivias
+
+# This file is part of django-memorize.
+
+# django-memorize is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation, either version 3 of the License, or (at your
+# option) any later version.
+
+# django-memorize is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with django-memorize.  If not, see <http://www.gnu.org/licenses/>.
+
 from functools import wraps
 
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, InvalidPage
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
 from django.views.generic.simple import direct_to_template
 
@@ -79,3 +96,19 @@ def practice_list(request, template='memorize/practice_list.html',
 
     return direct_to_template(request, template, {
             'practice_list': practice_list})
+
+@login_required
+def add_to_practice(request, object_id=None, slug=None, slug_field=None,
+                    model=None, post_save_redirect=None):
+    if object_id:
+        obj = get_object_or_404(model, pk=int(object_id))
+    elif slug and slug_field:
+        obj = get_object_or_404(model, **{slug_field: slug})
+    else:
+        return HttpResponseBadRequest()
+
+    practice = Practice(item=obj, user=request.user).save()
+    if post_save_redirect:
+        return HttpResponseRedirect(post_save_redirect)
+    else:
+        return HttpResponseRedirect(reverse('memorize.views.practice_list'))
